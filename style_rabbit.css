@@ -1,0 +1,124 @@
+*{
+    background-color:	#ffe182;;
+    /*margin: 50px;
+   background-image: url(https://i.pinimg.com/1200x/17/65/da/1765dabad25ca76014abb9016b0196bf.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    */
+}
+h1 {
+    font-family:Georgia, 'Times New Roman', Times, serif
+}
+
+header {
+      background-color: #fbeed7;
+      color: #2a003a;
+      padding: 30px 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+button 
+{
+    background-color:#ffd54f;    
+    color:#72250c;           
+    padding: 12px 20px;          
+    margin: 5px;                
+    border: none;             
+    border-radius: 8px;          
+    cursor: pointer;            
+    font-size: 16px;             
+    transition: 0.3s;           
+}
+
+button:hover 
+{
+     transform: scale(1.1);
+     background-color: #ffe082;
+}
+
+#splash 
+{
+    text-align: center;
+    font-family: "Garamond", 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+#sequence
+{
+    font-size: 26px;
+    font-family: "Lucida Console", "Courier New", monospace;
+    margin: 20px;
+    color: #5a381f;
+    font-weight: bold;
+}
+#userSequenceDisplay {
+    font-size: 22px;
+    font-family: monospace;
+    color: #7bc043;
+    font-weight: bold;
+  }
+
+#progressBar {
+    width: 60%;
+    height: 20px;
+    background-color:#ededeb;
+    margin: 20px auto;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid #4B523F;
+  }
+
+#progress {
+    width: 0%;
+    height: 100%;
+    background-color: #596253;
+    transition: width 0.4s ease;
+  }
+
+.hidden {
+    display: none;
+  }
+/*.logoBackground{
+  background-color: #f9e7c0 !important;  beige background */
+  /*display: inline-block;*/
+  /*padding: 25px;               space around logo */
+  /*border-radius: 50%;          makes it circular 
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  margin-bottom: 20px;        /* spacing below logo 
+}*/
+
+#splash img {
+    width: 120px;
+    border-radius: 50%;
+    margin-top: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+#wrongMessage{
+    color: #ffa500;
+}
+#animalReveal {
+    font-size: 28px;
+    animation: pop 1s ease-in-out;
+  }
+
+@keyframes pop {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+.confetti {
+    position: fixed;
+    top: -10px;
+    width: 10px;
+    height: 10px;
+    background:#ff506f;
+    animation: fall 3s linear infinite;
+  }
+
+@keyframes fall {
+    to {
+      transform: translateY(100vh) rotate(720deg);
+    }
+  }
+#animalImg{
+  background-image: none !important;
+}
+
+

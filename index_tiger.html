@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lilita+One">
+<link href='https://fonts.googleapis.com/css?family=Muli' rel='stylesheet'>
+<title>🧬 Haiwan Misteri - Nucleotide Game 🐾</title>
+<style>
+  body {
+    background-image: url(https://i.pinimg.com/736x/51/ba/c8/51bac8f772d4160b070e9b9b0a630b3d.jpg);
+    font-family: 'Muli';
+    font-size: 16px;
+    text-align: center;
+    margin: 0;
+    color:	#ffdb99;
+    overflow-x: hidden;
+    padding: 60px; /* ✅ Full page padding */
+    box-sizing: border-box;
+  }
+
+  /* ✅ Section containers (splash, game, result) */
+  #splash, #game, #result {
+    max-width: 900px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.15);
+    background-color:#ffdb99;
+    border-radius: 20px;
+    padding: 40px; /* ✅ Inner padding */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  h1 {
+    color:#2f4829;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  h2 {
+    font-size: 1.3em;
+    color:#3d3028;
+    margin-bottom: 20px;
+  }
+
+  button {
+    font-size: 20px;
+    margin: 10px;
+    padding: 14px 30px;
+    border: none;
+    background-color:#ffae19;
+    color: #210808;
+    cursor: pointer;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+  }
+
+  button:hover {
+    transform: scale(1.1);
+    background-color:#ffc65e;
+  }
+
+  #sequence {
+    font-size: 32px;
+    font-family: monospace;
+    margin: 25px 0;
+    color:#2a211c;
+    font-weight: bold;
+    letter-spacing: 8px;
+  }
+
+  #userSequenceDisplay {
+    font-size: 22px;
+    font-family: monospace;
+    color: #7bc043;
+    font-weight: bold;
+  }
+
+  #progressBar {
+    width: 60%;
+    height: 12px;
+    background-color:#ededeb;
+    margin: 25px auto;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid #007300;
+  }
+
+  #progress {
+    width: 0%;
+    height: 100%;
+    background-color: #008d00;
+    transition: width 0.4s ease;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  #splash img {
+    width: 130px;
+    border-radius: 50%;
+    margin-top: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    background-color: #f7e6c4; /* ✅ beige background for logo */
+    padding: 10px;
+  }
+
+  #animalReveal {
+    font-size: 28px;
+    animation: pop 1s ease-in-out;
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .confetti {
+    position: fixed;
+    top: -10px;
+    width: 10px;
+    height: 10px;
+    background:#ff506f;
+    animation: fall 3s linear infinite;
+  }
+
+  @keyframes fall {
+    to { transform: translateY(100vh) rotate(720deg); }
+  }
+</style>
+</head>
+<body>
+  <!-- Background Music -->
+  <audio id="bgMusic" src="retro-arcade-game-music-297305.mp3" loop></audio>
+
+  <!-- Splash Screen -->
+  <div id="splash">
+    <img src="littlelab_icon.png" alt="littlelab_icon">
+    <h1 style="font-family:'Lilita One'">🧬 TEKA HAIWAN MISTERI 🐾</h1>
+    <button onclick="startGame()">Mula!</button>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="game" class="hidden">
+    <h2>Pilih nukleotida pelengkap bagi setiap jujukan di bawah:</h2>
+    <p id="sequence"></p>
+
+    <div id="button_answer">
+      <button onclick="checkNucleotide('A')">A</button>
+      <button onclick="checkNucleotide('C')">C</button>
+      <button onclick="checkNucleotide('G')">G</button>
+      <button onclick="checkNucleotide('T')">T</button>
+    </div>
+
+    <div id="progressBar"><div id="progress"></div></div>
+    <p style="color:#2a211c">Jujukan pelengkap anda: <span id="userSequenceDisplay"></span></p>
+  </div>
+
+  <!-- Result Screen -->
+  <div id="result" class="hidden">
+    <h2 id="animalReveal"></h2>
+    <img id="animalImg" width="180" style="border-radius:20px; box-shadow:0 4px 8px rgba(0,0,0,0.2);" />
+  </div>
+
+  <!-- Sounds -->
+  <audio id="correctSound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+  <audio id="wrongSound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg"></audio>
+  <audio id="winSound" src="https://actions.google.com/sounds/v1/cartoon/slide_whistle_to_drum_hit.ogg"></audio>
+
+  <script>
+    const correctSeq = "TATCCT";
+    const complement = { A: "T", T: "A", C: "G", G: "C" };
+    let index = 0;
+    let userSeq = "";
+    const bgMusic = document.getElementById("bgMusic");
+
+    function startGame() {
+      document.getElementById("splash").classList.add("hidden");
+      document.getElementById("game").classList.remove("hidden");
+      document.getElementById("userSequenceDisplay").innerText = "";
+      index = 0;
+      userSeq = "";
+      document.getElementById("progress").style.width = "0%";
+      document.getElementById("sequence").textContent = correctSeq[index];
+      bgMusic.volume = 0.5;
+      bgMusic.play();
+    }
+
+    function checkNucleotide(nuc) {
+      const correctSound = document.getElementById("correctSound");
+      const wrongSound = document.getElementById("wrongSound");
+      const currentBase = correctSeq[index];
+      const expected = complement[currentBase];
+
+      if (nuc === expected) {
+        correctSound.play();
+        userSeq += nuc;
+        document.getElementById("userSequenceDisplay").innerText = userSeq;
+        index++;
+        document.getElementById("progress").style.width = (index / correctSeq.length) * 100 + "%";
+
+        if (index < correctSeq.length) {
+          document.getElementById("sequence").textContent = correctSeq[index];
+        } else {
+          setTimeout(showResult, 500);
+        }
+      } else {
+        wrongSound.play();
+        flashMessage("❌ Salah! Cuba lagi!");
+      }
+    }
+
+    function flashMessage(text) {
+      const msg = document.createElement("div");
+      msg.innerText = text;
+      msg.style.background = "#ffccbc";
+      msg.style.padding = "10px";
+      msg.style.margin = "10px auto";
+      msg.style.width = "60%";
+      msg.style.borderRadius = "10px";
+      msg.style.color = "#210808";
+      document.body.appendChild(msg);
+      setTimeout(() => msg.remove(), 1500);
+    }
+
+    function showResult() {
+      document.getElementById("game").classList.add("hidden");
+      document.getElementById("result").classList.remove("hidden");
+      document.getElementById("winSound").play();
+
+      for (let i = 0; i < 30; i++) {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        confetti.style.left = Math.random() * 100 + "vw";
+        confetti.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
+        confetti.style.animationDuration = Math.random() * 3 + 2 + "s";
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 5000);
+      }
+
+      document.getElementById("animalReveal").innerHTML =
+        "🎉 Hebat! Haiwan Misteri ialah <b>HARIMAU 🐯</b>";
+      document.getElementById("animalImg").src =
+        "https://i.pinimg.com/736x/db/69/66/db6966f9ed03fdc109d9fff47fdc7ba7.jpg";
+
+      setTimeout(() => {
+        window.location.href = "index_main.html";
+      }, 5000);
+    }
+  </script>
+</body>
+</html>

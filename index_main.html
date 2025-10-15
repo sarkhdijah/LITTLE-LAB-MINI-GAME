@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel ="stylesheet" href="index_main.css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lilita One">
+  <link href='https://fonts.googleapis.com/css?family=Muli' rel='stylesheet'>
+  <title>Little Lab - Main Page</title>
+
+  <style>
+    body {
+      background-image: url('https://i.pinimg.com/1200x/89/4c/5f/894c5f8a3a36847e7aaa9dbbdd30eb66.jpg');
+      font-family: 'Muli', sans-serif;
+      text-align: center;
+      color: #fbeed7;
+      margin: 0;
+      padding: 40px; /* ✅ Added padding for the whole page */
+      background-size: cover;
+      background-attachment: fixed;
+      box-sizing: border-box;
+    }
+
+    header {
+      background-color: rgba(251, 238, 215, 0.9);
+      color: #2a003a;
+      padding: 30px 20px; /* Slightly reduced so it respects body padding */
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    header img {
+      width: 100px;
+      border-radius: 50%;
+      background-color: #f9e7c0;
+      padding: 10px;
+    }
+
+    h1 {
+      font-family: "Lilita One", sans-serif;
+      font-weight: 400;
+      font-style: normal;
+      margin-top: 15px;
+      font-size: 2em;
+      color: #ffcc33;
+      letter-spacing: 1px;
+    }
+
+    .container {
+      margin-top: 60px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      padding: 20px; /* ✅ Added spacing around the button area */
+    }
+
+    button {
+      font-size: 20px;
+      margin: 8px;
+      padding: 12px 25px;
+      border: none;
+      background-color:#ffae19;
+      color:  #210808;
+      cursor: pointer;
+      border-radius: 15px;
+      transition: all 0.3s ease;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+    }
+
+    button:hover {
+      background-color: #ffe082;
+      transform: scale(1.08);
+    }
+
+    footer {
+      margin-top: 70px;
+      color: #bfaea0;
+      font-size: 14px;
+      padding-bottom: 30px;
+      background-color: rgba(42, 0, 58, 0.3);
+      border-radius: 15px;
+      padding: 10px;
+    }
+
+    /* Floating music control button */
+    #musicButton {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #ffcc33;
+      color: #2a003a;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 26px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease;
+    }
+
+    #musicButton:hover {
+      transform: scale(1.1);
+    }
+
+    /* ✅ Responsive adjustment for mobile */
+    @media (max-width: 600px) {
+      body {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 1.5em;
+      }
+
+      button {
+        width: 80%;
+        font-size: 18px;
+      }
+
+      header img {
+        width: 80px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <img src="littlelab_icon.png" alt="littlelab_icon" width="250px" height="150px">
+    <h1>🧬 Little Lab by Helixora 🧫</h1>
+    <p>Selamat datang ke zoo Little Lab!</p>
+  </header>
+
+  <div class="container">
+    <button onclick="openGame('index_rabbit.html')">Haiwan 1</button>
+    <button onclick="openGame('index_tiger.html')">Haiwan 2</button>
+    <button onclick="openGame('index_elephant.html')">Haiwan 3</button>
+    <button onclick="openGame('index_dolphin.html')">Haiwan 4</button>
+    <button onclick="openGame('index_cat.html')">Haiwan 5</button>
+  </div>
+
+  <footer>
+    © 2025 Little Lab by Helixora | Semua hak cipta terpelihara.
+  </footer>
+
+  <!-- 🎵 Background Music -->
+  <audio id="bgMusic" loop>
+    <source src="retro-arcade-game-music-297305.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- 🎶 Music Control Button -->
+  <button id="musicButton" onclick="toggleMusic()">🔈</button>
+
+  <script>
+    const bgMusic = document.getElementById('bgMusic');
+    const musicButton = document.getElementById('musicButton');
+    let isPlaying = false;
+
+    // Play music after user interaction (browser policy)
+    document.body.addEventListener('click', () => {
+      if (!isPlaying) {
+        bgMusic.play();
+        isPlaying = true;
+        musicButton.textContent = '🔊';
+      }
+    }, { once: true });
+
+    // Toggle play/pause manually
+    function toggleMusic() {
+      if (isPlaying) {
+        bgMusic.pause();
+        isPlaying = false;
+        musicButton.textContent = '🔈';
+      } else {
+        bgMusic.play();
+        isPlaying = true;
+        musicButton.textContent = '🔊';
+      }
+    }
+
+    function openGame(fileName) {
+      window.location.href = fileName;
+    }
+  </script>
+</body>
+</html>

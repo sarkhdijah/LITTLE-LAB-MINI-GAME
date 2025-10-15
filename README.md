@@ -1,2 +1,1 @@
-# LITTLE-LAB-MINI-GAME
-nucleotide game
+# LITTLE-LAB
